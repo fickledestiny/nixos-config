@@ -50,7 +50,7 @@
     spawn-at-startup "waybar"
     spawn-at-startup "mako"
     spawn-at-startup "nm-applet" "--indicator"
-    spawn-at-startup "swayidle" "-w" "timeout" "300" "swaylock --screenshots --clock --indicator --indicator-radius 100 --indicator-thickness 7 --effect-blur 7x5 --effect-vignette 0.5:0.5 --color 1e1e2ebb --font 'JetBrainsMono Nerd Font' --inside-color 1e1e2e88 --ring-color 89b4faff --key-hl-color a6e3a1ff --text-color cdd6f4ff --line-color 00000000 --separator-color 00000000 --fade-in 0.2" "timeout" "600" "NIRI_SOCKET=$(ls /run/user/$(id -u)/niri.*.sock 2>/dev/null | head -1) niri msg action power-off-monitors" "resume" "NIRI_SOCKET=$(ls /run/user/$(id -u)/niri.*.sock 2>/dev/null | head -1) niri msg action power-on-monitors"
+    spawn-at-startup "swayidle" "-w" "timeout" "300" "swaylock --screenshots --clock --indicator --indicator-radius 100 --indicator-thickness 7 --effect-blur 7x5 --effect-vignette 0.5:0.5 --color 1e1e2ebb --font 'JetBrainsMono Nerd Font' --inside-color 1e1e2e88 --ring-color 89b4faff --key-hl-color a6e3a1ff --text-color cdd6f4ff --line-color 00000000 --separator-color 00000000 --fade-in 0.2" "timeout" "600" "$HOME/.local/bin/niri-dpms-off" "resume" "$HOME/.local/bin/niri-dpms-on"
 
     prefer-no-csd
 
@@ -124,4 +124,25 @@
         clip-to-geometry true
     }
   '';
+
+  # Wrapper scripts for swayidle — niri socket path is dynamic, must be resolved at runtime
+  home.file.".local/bin/niri-dpms-off" = {
+    executable = true;
+    text = ''
+      #!/bin/sh
+      NIRI_SOCKET=$(ls /run/user/$(id -u)/niri.*.sock 2>/dev/null | head -1)
+      export NIRI_SOCKET
+      exec niri msg action power-off-monitors
+    '';
+  };
+
+  home.file.".local/bin/niri-dpms-on" = {
+    executable = true;
+    text = ''
+      #!/bin/sh
+      NIRI_SOCKET=$(ls /run/user/$(id -u)/niri.*.sock 2>/dev/null | head -1)
+      export NIRI_SOCKET
+      exec niri msg action power-on-monitors
+    '';
+  };
 }

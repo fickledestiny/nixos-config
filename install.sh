@@ -19,14 +19,30 @@ nix --extra-experimental-features "nix-command flakes" \
   run github:nix-community/disko -- \
   --mode disko "$REPO_DIR/hosts/$HOST/disko.nix"
 
+# Ensure the ext4 label is set (disko may not apply it reliably)
+echo "==> Setting filesystem label..."
+e2label "${DISK}2" nixos
+
 echo "==> Copying config to /mnt/etc/nixos..."
 mkdir -p /mnt/etc/nixos
 cp -r "$REPO_DIR/." /mnt/etc/nixos/
 
 echo "==> Generating hardware configuration..."
-nixos-generate-config --root /mnt
-cp /mnt/etc/nixos/hardware-configuration.nix \
-   /mnt/etc/nixos/hosts/$HOST/hardware-configuration.nix
+nixos-generate-config --root /mnt --no-filesystems
+# Inject root filesystem entry (label is stable across reinstalls, UUID is not)
+HWCONF=/mnt/etc/nixos/hardware-configuration.nix
+# Remove trailing closing brace, append fileSystems block, re-add brace
+head -n -1 "$HWCONF" > "${HWCONF}.tmp"
+cat >> "${HWCONF}.tmp" <<'EOF'
+
+  fileSystems."/" = {
+    device = "/dev/disk/by-label/nixos";
+    fsType = "ext4";
+  };
+}
+EOF
+mv "${HWCONF}.tmp" "$HWCONF"
+cp "$HWCONF" /mnt/etc/nixos/hosts/$HOST/hardware-configuration.nix
 
 echo "==> Running nixos-install..."
 nixos-install --flake "/mnt/etc/nixos#$HOST" --no-root-passwd
