@@ -31,5 +31,8 @@ cp /mnt/etc/nixos/hardware-configuration.nix \
 echo "==> Running nixos-install..."
 nixos-install --flake "/mnt/etc/nixos#$HOST" --no-root-passwd
 
+echo "==> Setting password for jerem..."
+nixos-enter --root /mnt -- passwd jerem
+
 echo ""
 echo "==> Done! You can now reboot."
