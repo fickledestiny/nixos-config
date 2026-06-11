@@ -19,7 +19,7 @@ mkdir -p /mnt/etc/nixos
 cp -r "$REPO_DIR/." /mnt/etc/nixos/
 
 echo "==> Generating hardware configuration..."
-nixos-generate-config --root /mnt --no-filesystems
+nixos-generate-config --root /mnt
 cp /mnt/etc/nixos/hardware-configuration.nix \
    /mnt/etc/nixos/hosts/$HOST/hardware-configuration.nix
 
