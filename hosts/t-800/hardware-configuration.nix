@@ -8,7 +8,6 @@
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
-  # fileSystems managed here (not by disko) since the disk was installed with MBR
   fileSystems."/" = {
     device = "/dev/disk/by-label/nixos";
     fsType = "ext4";
