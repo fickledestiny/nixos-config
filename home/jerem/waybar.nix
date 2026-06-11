@@ -22,6 +22,7 @@
         "clock"
       ];
       modules-right = [
+        "custom/profile"
         "cpu"
         "memory"
         "disk"
@@ -97,6 +98,14 @@
 
       "tray" = {
         spacing = 8;
+      };
+
+      "custom/profile" = {
+        exec = "~/.config/waybar/profile-status.sh";
+        return-type = "json";
+        interval = 5;
+        on-click = "~/.config/waybar/profile-menu.sh";
+        tooltip = true;
       };
 
       "custom/power" = {
@@ -225,6 +234,14 @@
       #custom-power:hover {
         background-color: rgba(243, 139, 168, 0.2);
       }
+
+      #custom-profile {
+        color: #a6e3a1;
+      }
+
+      #custom-profile.performance { color: #f38ba8; }
+      #custom-profile.balanced    { color: #a6e3a1; }
+      #custom-profile.power-saver { color: #89b4fa; }
     '';
   };
 
@@ -250,6 +267,42 @@
         *Poweroff) systemctl poweroff ;;
         *Reboot)   systemctl reboot ;;
         *Logout)   niri msg action quit ;;
+      esac
+    '';
+  };
+
+  # Profile status script — outputs current profile with icon for waybar
+  home.file.".config/waybar/profile-status.sh" = {
+    executable = true;
+    text = ''
+      #!/usr/bin/env bash
+      profile=$(powerprofilesctl get 2>/dev/null || echo "balanced")
+      case "$profile" in
+        performance)  echo '{"text":"󰓅 Perf","tooltip":"Performance mode","class":"performance"}' ;;
+        balanced)     echo '{"text":"󰾅 Bal","tooltip":"Balanced mode","class":"balanced"}' ;;
+        power-saver)  echo '{"text":"󰌪 Eco","tooltip":"Power saver mode","class":"power-saver"}' ;;
+        *)            echo '{"text":"󰾅 Bal","tooltip":"Balanced","class":"balanced"}' ;;
+      esac
+    '';
+  };
+
+  # Profile menu script — pick profile via wofi
+  home.file.".config/waybar/profile-menu.sh" = {
+    executable = true;
+    text = ''
+      #!/usr/bin/env bash
+      choice=$(printf "󰓅  Performance\n󰾅  Balanced\n󰌪  Power saver" \
+        | wofi --dmenu \
+               --prompt "Profile" \
+               --width 220 \
+               --height 148 \
+               --lines 3 \
+               --hide-scroll \
+               --no-actions)
+      case "$choice" in
+        *Performance) powerprofilesctl set performance ;;
+        *Balanced)    powerprofilesctl set balanced ;;
+        *Power*)      powerprofilesctl set power-saver ;;
       esac
     '';
   };
