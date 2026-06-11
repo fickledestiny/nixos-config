@@ -23,7 +23,9 @@
   # Dell XPS hardware niceties
   services.fwupd.enable = true;
   services.thermald.enable = true;
-  services.tlp.enable = true;
+  # power-profiles-daemon manages performance/balanced/power-saver profiles
+  # (replaces tlp — they conflict)
+  services.power-profiles-daemon.enable = true;
   hardware.cpu.intel.updateMicrocode = true;
 
   system.stateVersion = "24.11";
