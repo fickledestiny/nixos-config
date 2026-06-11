@@ -51,7 +51,7 @@ My NixOS configuration.
 
 3. **Clone this repo:**
    ```sh
-   git clone https://github.com/<your-user>/nixos-config /mnt/etc/nixos
+   git clone https://github.com/fickledestiny/nixos-config
    ```
 
 4. **Install:**

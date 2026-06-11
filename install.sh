@@ -9,6 +9,11 @@ echo "==> Installing NixOS host: $HOST on disk: $DISK"
 echo "    Press Ctrl+C within 5 seconds to abort..."
 sleep 5
 
+# Configure binary caches on the ISO to avoid compiling niri from source
+echo "==> Configuring binary caches..."
+export NIX_CONFIG="extra-substituters = https://niri.cachix.org
+extra-trusted-public-keys = niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964="
+
 echo "==> Partitioning $DISK with disko..."
 nix --extra-experimental-features "nix-command flakes" \
   run github:nix-community/disko -- \
