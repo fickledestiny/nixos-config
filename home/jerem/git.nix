@@ -4,8 +4,8 @@
   programs.git = {
     enable = true;
     settings = {
-      user.name = "jerem";
-      user.email = "jerem@t-800.local";
+      user.name = "fickledestiny";
+      user.email = "6524655+fickledestiny@users.noreply.github.com";
       init.defaultBranch = "main";
       pull.rebase = false;
     };
