@@ -1,10 +1,8 @@
 
-# NOTE: disko.enableConfig = false — disko is used only for the install script.
-# The running system mounts are defined in hardware-configuration.nix.
 { ... }:
 
 {
-  disko.enableConfig = false;
+  disko.enableConfig = true;
 
   disko.devices = {
     disk = {

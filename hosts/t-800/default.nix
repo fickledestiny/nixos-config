@@ -12,14 +12,10 @@
 
   networking.hostName = "t-800";
 
-  # Legacy (BIOS / MBR) boot — device managed by disko
-  boot.loader.grub = {
-    enable = true;
-    device = "/dev/nvme0n1";
-    useOSProber = true;
-  };
-  boot.loader.systemd-boot.enable = lib.mkForce false;
-  boot.loader.efi.canTouchEfiVariables = lib.mkForce false;
+  boot.loader.systemd-boot.enable = lib.mkForce true;
+  boot.loader.efi.canTouchEfiVariables = lib.mkForce true;
+  boot.loader.grub.enable = false;
+  boot.initrd.systemd.enable = true;
 
   # Dell XPS hardware niceties
   services.fwupd.enable = true;
