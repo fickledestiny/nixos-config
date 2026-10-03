@@ -8,7 +8,7 @@ My NixOS configuration.
 |---|---|
 | **Compositor** | [Niri](https://github.com/YaLTeR/niri) (Wayland, scrolling) |
 | **Display manager** | Ly |
-| **Status bar** | Waybar |
+| **Status bar** | Waybar (network, temperature, audio, power profiles, keep-awake, build revision) |
 | **Launcher** | Wofi |
 | **Screen locker** | Swaylock-effects |
 | **Idle daemon** | Swayidle (lock at 5 min, screen off at 10 min) |
@@ -23,8 +23,9 @@ My NixOS configuration.
 | **Theme** | Catppuccin Mocha (dark) |
 | **Font** | JetBrainsMono Nerd Font |
 | **Keyboard** | French AZERTY |
+| **Audio** | PipeWire, Pavucontrol, Wiremix |
+| **AI coding agent** | [Pi](https://pi.dev) + localhost-only Ollama (CPU) |
 
-### CLI tools
 
 | Tool | Purpose |
 |---|---|
@@ -38,6 +39,10 @@ My NixOS configuration.
 | `btop` / `htop` / `atop` | System monitors |
 | `procs` | Better `ps` |
 | `fastfetch` | System info on terminal start |
+| `kubectl` / `helm` / `k9s` | Personal Kubernetes labs |
+| `tfswitch` | Select and install Terraform versions |
+| `rsync` / `rclone` | Local, remote, and cloud file transfers |
+| `jq` / `yq` | JSON and YAML processing |
 
 ## Installing on a fresh NixOS minimal image
 

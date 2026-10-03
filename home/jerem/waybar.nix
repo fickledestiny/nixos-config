@@ -22,13 +22,17 @@
         "clock"
       ];
       modules-right = [
-        "custom/profile"
+        "custom/nixdirty"
         "cpu"
         "memory"
+        "temperature"
         "disk"
+        "network"
         "pulseaudio"
         "battery"
+        "idle_inhibitor"
         "tray"
+        "power-profiles-daemon"
         "custom/power"
       ];
 
@@ -74,6 +78,7 @@
           default = [ "󰕿" "󰖀" "󰕾" ];
         };
         on-click = "pamixer -t";
+        on-click-right = "pavucontrol";
         on-scroll-up = "pamixer -i 5";
         on-scroll-down = "pamixer -d 5";
       };
@@ -100,11 +105,40 @@
         spacing = 8;
       };
 
-      "custom/profile" = {
-        exec = "~/.config/waybar/profile-status.sh";
-        return-type = "json";
+      "temperature" = {
+        format = "󰔏 {temperatureC}°C";
+        format-critical = "󰀦 {temperatureC}°C";
+        critical-threshold = 85;
         interval = 5;
-        on-click = "~/.config/waybar/profile-menu.sh";
+        tooltip = false;
+      };
+
+      "idle_inhibitor" = {
+        format = "{icon}";
+        format-icons = {
+          activated = "󰅶";
+          deactivated = "󰾪";
+        };
+        tooltip-format-activated = "Caffeine on";
+        tooltip-format-deactivated = "Caffeine off";
+      };
+
+      "power-profiles-daemon" = {
+        format = "{icon}";
+        tooltip = true;
+        tooltip-format = "Power profile: {profile}";
+        format-icons = {
+          default = "󰾅";
+          performance = "󰓅";
+          balanced = "󰾅";
+          power-saver = "󰌪";
+        };
+      };
+
+      "custom/nixdirty" = {
+        exec = "~/.config/waybar/nix-dirty.sh";
+        return-type = "json";
+        interval = 30;
         tooltip = true;
       };
 
@@ -182,10 +216,14 @@
       #clock,
       #battery,
       #pulseaudio,
+      #network,
       #cpu,
       #memory,
+      #temperature,
       #disk,
       #tray,
+      #idle_inhibitor,
+      #power-profiles-daemon,
       #custom-power {
         margin: 4px 2px;
         padding: 0 12px;
@@ -211,6 +249,11 @@
 
       #disk { color: #94e2d5; }
 
+      #network { color: #a6e3a1; }
+      #temperature { color: #fab387; }
+      #temperature.critical { color: #f38ba8; }
+      #idle_inhibitor.activated { color: #f38ba8; }
+
       #clock { font-weight: bold; }
 
       #battery.warning { color: #fab387; }
@@ -235,13 +278,19 @@
         background-color: rgba(243, 139, 168, 0.2);
       }
 
-      #custom-profile {
-        color: #a6e3a1;
-      }
+      #power-profiles-daemon { color: #a6e3a1; }
+      #power-profiles-daemon.performance { color: #f38ba8; }
+      #power-profiles-daemon.balanced { color: #a6e3a1; }
+      #power-profiles-daemon.power-saver { color: #89b4fa; }
 
-      #custom-profile.performance { color: #f38ba8; }
-      #custom-profile.balanced    { color: #a6e3a1; }
-      #custom-profile.power-saver { color: #89b4fa; }
+      #custom-nixdirty {
+        margin: 4px 2px;
+        padding: 0 12px;
+        background-color: rgba(243, 139, 168, 0.25);
+        color: #f9e2af;
+        border-radius: 99px;
+        font-weight: bold;
+      }
     '';
   };
 
@@ -271,39 +320,17 @@
     '';
   };
 
-  # Profile status script — outputs current profile with icon for waybar
-  home.file.".config/waybar/profile-status.sh" = {
+  home.file.".config/waybar/nix-dirty.sh" = {
     executable = true;
     text = ''
       #!/usr/bin/env bash
-      profile=$(powerprofilesctl get 2>/dev/null || echo "balanced")
-      case "$profile" in
-        performance)  echo '{"text":"󰓅 Perf","tooltip":"Performance mode","class":"performance"}' ;;
-        balanced)     echo '{"text":"󰾅 Bal","tooltip":"Balanced mode","class":"balanced"}' ;;
-        power-saver)  echo '{"text":"󰌪 Eco","tooltip":"Power saver mode","class":"power-saver"}' ;;
-        *)            echo '{"text":"󰾅 Bal","tooltip":"Balanced","class":"balanced"}' ;;
-      esac
-    '';
-  };
-
-  # Profile menu script — pick profile via wofi
-  home.file.".config/waybar/profile-menu.sh" = {
-    executable = true;
-    text = ''
-      #!/usr/bin/env bash
-      choice=$(printf "󰓅  Performance\n󰾅  Balanced\n󰌪  Power saver" \
-        | wofi --dmenu \
-               --prompt "Profile" \
-               --width 220 \
-               --height 148 \
-               --lines 3 \
-               --hide-scroll \
-               --no-actions)
-      case "$choice" in
-        *Performance) powerprofilesctl set performance ;;
-        *Balanced)    powerprofilesctl set balanced ;;
-        *Power*)      powerprofilesctl set power-saver ;;
-      esac
+      rev=$(nixos-version --configuration-revision 2>/dev/null || true)
+      if [[ -z "$rev" || "$rev" == "unknown" || "$rev" == *dirty* ]]; then
+        ${pkgs.jq}/bin/jq -cn --arg rev "''${rev:-unknown}" \
+          '{text: "󰀦 dirty", tooltip: ("NixOS build revision is dirty or unknown\nrevision: " + $rev), class: "dirty"}'
+      else
+        printf '%s\n' '{"text":"","tooltip":""}'
+      fi
     '';
   };
 

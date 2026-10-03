@@ -36,6 +36,7 @@
             niri.nixosModules.niri
             home-manager.nixosModules.home-manager
             {
+              system.configurationRevision = self.rev or self.dirtyRev or "unknown";
               nixpkgs.overlays = [ nur.overlays.default ];
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;

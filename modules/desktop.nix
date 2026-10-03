@@ -20,6 +20,7 @@
 
   # Niri compositor (via niri-flake)
   programs.niri.enable = true;
+  programs.niri.package = pkgs.niri;
 
   # XDG portals for Wayland apps (screenshots, file pickers, ...)
   xdg.portal = {
@@ -54,7 +55,7 @@
   # Dark theme system-wide (GTK)
   environment.sessionVariables = {
     GTK_THEME = "Adwaita-dark";
-    QT_QPA_PLATFORMTHEME = "gtk2";
+    QT_QPA_PLATFORMTHEME = "gtk3";
   };
 
   services.gvfs.enable = true;
@@ -70,6 +71,8 @@
     wl-clipboard
     brightnessctl
     pamixer
+    pavucontrol
+    wiremix
     playerctl
     networkmanagerapplet
     adwaita-icon-theme

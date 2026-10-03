@@ -6,6 +6,7 @@
     ./disko.nix
     ../../modules/base.nix
     ../../modules/desktop.nix
+    ../../modules/ai.nix
     ../../modules/users.nix
   ];
 

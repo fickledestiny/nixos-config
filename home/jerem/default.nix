@@ -14,6 +14,8 @@
     ./thunar.nix
     ./zellij.nix
     ./ssh.nix
+    ./pi.nix
+    ./cli-tools.nix
   ];
 
   home.username = "jerem";
@@ -68,7 +70,7 @@
 
   qt = {
     enable = true;
-    platformTheme.name = "gtk";
+    platformTheme.name = "gtk3";
     style.name = "adwaita-dark";
   };
 

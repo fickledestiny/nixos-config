@@ -127,23 +127,6 @@
     };
   };
 
-  # Extra CLI tools referenced in aliases
-  home.packages = with pkgs; [
-    bat       # better cat
-    eza       # better ls
-    btop      # better top
-    atop      # advanced process monitor
-    htop      # interactive process viewer
-    procs     # better ps
-    fd        # better find
-    ripgrep   # better grep
-    fzf       # fuzzy finder
-    zoxide    # smarter z
-    delta     # better git diff
-    fastfetch # system info
-    libnotify # provides notify-send
-  ];
-
   # fzf integration
   programs.fzf = {
     enable = true;
