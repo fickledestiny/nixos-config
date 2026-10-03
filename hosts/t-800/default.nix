@@ -4,6 +4,7 @@
   imports = [
     ./hardware-configuration.nix
     ./disko.nix
+    ./nvidia.nix
     ../../modules/base.nix
     ../../modules/desktop.nix
     ../../modules/ai.nix

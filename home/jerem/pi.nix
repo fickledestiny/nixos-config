@@ -4,7 +4,7 @@ let
   agentDir = "${config.home.homeDirectory}/.pi/agent";
   settings = pkgs.writeText "pi-settings.json" (builtins.toJSON {
     defaultProvider = "ollama";
-    defaultModel = "qwen3:4b";
+    defaultModel = "qwen3:8b";
     defaultThinkingLevel = "off";
     compaction = {
       reserveTokens = 4096;
@@ -18,8 +18,8 @@ let
       api = "openai-completions";
       apiKey = "ollama";
       models = [{
-        id = "qwen3:4b";
-        name = "Qwen3 4B (local)";
+        id = "qwen3:8b";
+        name = "Qwen3 8B (local)";
         reasoning = true;
         input = [ "text" ];
         cost = { input = 0; output = 0; cacheRead = 0; cacheWrite = 0; };
