@@ -15,7 +15,7 @@
   # Legacy (BIOS / MBR) boot — device managed by disko
   boot.loader.grub = {
     enable = true;
-    device = "/dev/sda";
+    device = "/dev/nvme0n1";
     useOSProber = true;
   };
   boot.loader.systemd-boot.enable = lib.mkForce false;

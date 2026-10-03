@@ -2,7 +2,7 @@
 set -euo pipefail
 
 HOST="${1:-t-800}"
-DISK="${2:-/dev/sda}"
+DISK="${2:-/dev/nvme0n1}"
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 echo "==> Installing NixOS host: $HOST on disk: $DISK"
