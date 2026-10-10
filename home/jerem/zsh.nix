@@ -72,6 +72,12 @@
       # Autosuggestion accept with Right arrow or End
       bindkey '^ ' autosuggest-accept
 
+      if [[ -d "$HOME/.config/zsh" ]]; then
+        for file in "$HOME/.config/zsh/"*.zsh(N); do
+          [[ -f "$file" ]] && source "$file"
+        done
+      fi
+
       # Useful aliases
       alias ls='ls --color=auto'
       alias ll='ls -lah'
@@ -89,9 +95,15 @@
       alias df='df -h'
       alias du='du -sh'
       alias rebuild='sudo nixos-rebuild switch --flake /etc/nixos#t-800'
+      # Secrets management aliases
+      alias sync-secrets='sync-secrets'
+      alias sync-secrets-proxmox='sync-secrets proxmox'
+      alias sync-secrets-rustfs='sync-secrets rustfs'
+      alias proxmox-env='load-proxmox-env'
+      alias rustfs-env='load-rustfs-env'
       # Show system info on terminal start
-    fastfetch
-  '';
+      fastfetch
+    '';
   };
 
   # Starship: cross-shell prompt (replaces oh-my-zsh themes)

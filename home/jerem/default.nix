@@ -16,6 +16,8 @@
     ./ssh.nix
     ./pi.nix
     ./cli-tools.nix
+    ./proxmox.nix
+    ./secrets.nix
   ];
 
   home.username = "jerem";
