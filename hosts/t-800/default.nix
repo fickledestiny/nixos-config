@@ -8,6 +8,7 @@
     ../../modules/base.nix
     ../../modules/desktop.nix
     ../../modules/ai.nix
+    ../../modules/gaming.nix
     ../../modules/users.nix
   ];
 
