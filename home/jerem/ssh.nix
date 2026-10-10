@@ -41,11 +41,12 @@
   # SSH client config
   programs.ssh = {
     enable = true;
-    addKeysToAgent = "yes";
-    matchBlocks = {
+    enableDefaultConfig = false;
+    settings = {
       "*" = {
-        identityFile = "~/.ssh/id_ed25519";
-        serverAliveInterval = 60;
+        AddKeysToAgent = "yes";
+        IdentityFile = "~/.ssh/id_ed25519";
+        ServerAliveInterval = 60;
       };
     };
   };

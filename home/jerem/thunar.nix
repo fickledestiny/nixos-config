@@ -5,7 +5,7 @@
     thunar
     thunar-archive-plugin
     thunar-volman
-    xfce.tumbler          # thumbnails
+    tumbler               # thumbnails
     ffmpegthumbnailer     # video thumbnails
     gvfs                  # trash, network shares, MTP
     loupe                 # image viewer (GNOME)
