@@ -17,7 +17,6 @@
   boot.loader.systemd-boot.enable = lib.mkForce true;
   boot.loader.efi.canTouchEfiVariables = lib.mkForce true;
   boot.loader.grub.enable = false;
-  boot.initrd.systemd.enable = true;
 
   # Dell XPS hardware niceties
   services.fwupd.enable = true;

@@ -15,6 +15,7 @@
     ./zellij.nix
     ./ssh.nix
     ./pi.nix
+    ./claude.nix
     ./cli-tools.nix
     ./proxmox.nix
     ./secrets.nix
