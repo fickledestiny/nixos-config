@@ -23,6 +23,7 @@
     rclone
     jq
     yq-go
+    uv
   ];
 
   home.sessionPath = [ "${config.home.homeDirectory}/.local/bin" ];
