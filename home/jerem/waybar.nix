@@ -304,17 +304,18 @@
     executable = true;
     text = ''
       #!/usr/bin/env bash
-      choice=$(printf "󰐥  Poweroff\n󰜉  Reboot\n󰍃  Logout" \
+      choice=$(printf "󰐥  Poweroff\n󰜉  Reboot\n󰒲  Hibernate\n󰍃  Logout" \
         | wofi --dmenu \
                --prompt "Power" \
                --width 200 \
-               --height 148 \
-               --lines 3 \
+               --height 184 \
+               --lines 4 \
                --hide-scroll \
                --no-actions)
       case "$choice" in
         *Poweroff) systemctl poweroff ;;
         *Reboot)   systemctl reboot ;;
+        *Hibernate) systemctl hibernate ;;
         *Logout)   niri msg action quit ;;
       esac
     '';
