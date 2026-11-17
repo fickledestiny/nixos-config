@@ -10,6 +10,7 @@
     ../../modules/ai.nix
     ../../modules/gaming.nix
     ../../modules/users.nix
+    ../../modules/battery-blink.nix
   ];
 
   networking.hostName = "t-800";
